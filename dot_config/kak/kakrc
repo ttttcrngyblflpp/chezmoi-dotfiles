@@ -1,0 +1,219 @@
+# Configuration to configure things better
+define-command eval-selection %{eval %reg[.]}
+alias global es eval-selection
+
+# Fundamentally broken editing features
+map -docstring line global object l '<esc>gi<a-l>'
+
+define-command -hidden ctrl-u 'exec -draft hGi<a-c>'
+define-command -hidden ctrl-k 'exec -draft <a-l><a-c>'
+define-command -hidden ctrl-w 'exec -draft hB<a-c>'
+
+map global insert <c-q> '<esc>'
+map global insert <c-u> '<a-;>: ctrl-u<ret>'
+map global insert <c-k> '<a-;>: ctrl-k<ret>'
+map global insert <c-w> '<a-;>: ctrl-w<ret>'
+map global insert <c-b> '<a-;>h'
+map global insert <c-f> '<a-;>l'
+map global insert <c-a> '<a-;>gi'
+map global insert <c-e> '<a-;>gl<a-;>l'
+map global insert <a-b> '<a-;>b'
+map global insert <a-f> '<a-;>w<a-;>l'
+
+map global normal / '/(?S)'
+map global normal ? '?(?S)'
+map global normal <a-/> '<a-/>(?S)'
+map global normal <a-?> '<a-?>(?S)'
+
+set global tabstop 3
+
+# Case conversion
+define-command snakecase -override %{
+    try %[
+        exec '<a-:><a-;>Z;`zs-|[a-z0-9][A-Z]<ret>;a<space><esc>s[-\s]+<ret>c_<esc><a-i>w`'
+    ]
+}
+define-command spacecase -override %{
+    try %[
+        exec '<a-:><a-;>Z;`zs-|[a-z0-9][A-Z]<ret>;a<space><esc>s[-\s]+<ret>c <esc><a-i>w`'
+    ]
+}
+define-command camelcase -override %{
+    try %[
+        exec '`s[-_<space>]<ret>d~<a-i>w'
+    ]
+}
+define-command kebabcase -override %{
+    try %[
+        exec '<a-:><a-;>s_|[a-z][A-Z]<ret>;a<space><esc>s[_\s]+<ret>c-<esc><a-i>w`'
+    ]
+}
+
+# Highlighters
+add-highlighter global/ number-lines -relative
+add-highlighter global/ wrap
+add-highlighter global/trailing-whitespcae regex '\h+$' 0:Error
+
+set-option global grepcmd 'rg -n --column'
+
+hook global ModuleLoaded tmux %{
+    alias global terminal tmux-terminal-window
+}
+
+hook global BufOpenFile .* %{
+    editorconfig-load
+    autoconfigtab
+}
+hook global BufNewFile .* %{
+    editorconfig-load
+    autoconfigtab
+}
+
+map global normal = '|fmt -w $kak_opt_autowrap_column<ret>'
+
+hook global WinSetOption filetype=rust %{
+    set-face window module default
+    set-face window function default+fg
+    set-face window variable default
+}
+
+set-option global disabled_hooks go-closing-delimiter-insert
+
+declare-user-mode grep
+map global user g ': enter-user-mode grep<ret>' -docstring 'grep'
+map global grep n ': grep-next-match<ret>' -docstring 'grep-next-match'
+map global grep p ': grep-previous-match<ret>' -docstring 'grep-previous-match'
+map global grep . ': lsp-next-location *goto*<ret>' -docstring 'lsp-next-location *goto*'
+map global grep , ': lsp-previous-location *goto*<ret>' -docstring 'lsp-previous-location *goto*'
+
+# Note the argument to eval must be a string, which is single-quoted. Inside which the filename
+# argument may contain spaces, so it is double-quoted, but the " needs to be doubled due to
+# inside a "-string.
+def -override lf %{
+    terminal sh -c "
+        lf -selection-path /tmp/kak_%val{client_pid}_lf '%val{buffile}'
+        kak -p %val{session} <<EOF
+        eval -client %val{client} 'edit ""$(cat /tmp/kak_%val{client_pid}_lf)""'
+EOF
+    "
+}
+map global user r ': lf<ret>' -docstring 'select files in lf'
+
+# Note the argument to eval must be a string, which is single-quoted. Inside which the filename
+# argument may contain spaces, so it is double-quoted, but the " needs to be doubled due to
+# inside a "-string.
+def -override ranger %{
+    terminal sh -c "
+        ranger --choosefiles /tmp/kak_%val{client_pid}_ranger --selectfile '%val{buffile}'
+        kak -p %val{session} <<EOF
+        eval -client %val{client} 'edit ""$(cat /tmp/kak_%val{client_pid}_ranger)""'
+EOF
+    "
+}
+
+evaluate-commands %sh{
+    plugins="$kak_config/plugins"
+    mkdir -p "$plugins"
+    [ ! -e "$plugins/plug.kak" ] && \
+        git clone -q https://github.com/andreyorst/plug.kak.git "$plugins/plug.kak"
+    printf "%s\n" "source '$plugins/plug.kak/rc/plug.kak'"
+}
+plug "andreyorst/plug.kak" noload
+
+plug "andreyorst/smarttab.kak" defer smarttab %{
+    set-option global softtabstop 4
+} config %{
+    hook global WinSetOption filetype=.* expandtab
+    hook global WinSetOption filetype=go smarttab
+}
+
+plug "andreyorst/fzf.kak" config %{
+    map -docstring 'fzf-mode' global user f %{: fzf-mode<ret>}
+    map -docstring 'fzf hidden' global user F %{: fzf -fzf-impl %{FZF_DEFAULT_COMMAND='rg --files -uu' fzf} -kak-cmd %{edit -existing}<ret>}
+} defer fzf-file %{
+    set-option global fzf_file_command 'rg'
+} defer fzf %{
+    set-option global fzf_use_main_selection false
+    set-option global fzf_preview_pos 'up'
+}
+
+plug "delapouite/kakoune-buffers" config %{
+    map -docstring 'buffers' global user b ': enter-buffers-mode<ret>'
+    map -docstring 'buffers locked' global user B ': enter-user-mode -lock buffers<ret>'
+}
+
+plug "delapouite/kakoune-registers"
+
+
+plug "kak-lsp/kak-lsp" do %{
+    cargo install --locked --force --path .
+} config %{
+    map -docstring 'lsp' global user l %{: enter-user-mode lsp<ret>}
+
+    set-option global lsp_cmd %sh{
+        if [[ $PWD == /google/src/cloud/gongt/* ]]
+        then
+            echo $kak_opt_lsp_cmd -c ~/.config/kak-lsp/g3.toml
+        else
+            echo $kak_opt_lsp_cmd
+        fi
+    }
+}
+lsp-enable
+
+define-command -params 1 -client-completion show-on %{
+    evaluate-commands -client %arg{1} e %val{buffile} %val{cursor_line} %val{cursor_column}
+}
+alias global so show-on
+
+define-command -params 1 -client-completion swap-with %{
+    nop %sh{
+        # kak is grabbing mouse events and preventing copy/paste
+        kak -p $kak_session <<< "\
+            eval -client '$1' 'show-on $kak_client'
+            eval -client '$1' 'e $kak_buffile $kak_cursor_line $kak_cursor_column'"
+    }
+}
+alias global sw swap-with
+
+define-command -params 1 send-to %{
+    nop %sh{
+        kak -p $1 <<<"set-register h '"$(sed "s/'/''/g" <<<"$kak_reg_dot")"'"
+    }
+}
+alias global st send-to
+
+define-command write-tmp %(
+    nop %sh(
+        echo -n "$kak_reg_dot" >/tmp/kak_"$kak_session"
+    )
+)
+alias global wt write-tmp
+
+define-command -params 2.. -docstring %{
+    send-selection-to-session-register <register> <session>: assign the current selection to the given register of the target session
+} -shell-script-candidates %{
+    case "$kak_token_to_complete" in
+        0) printf 'arobase\ncaret\ncolon\ndot\ndquote\nhash\npercent\npipe\nslash\nunderscore\n';;
+        1)
+            if [ -n "${XDG_RUNTIME_DIR}" ]; then
+                ls -1 "${XDG_RUNTIME_DIR}"/kakoune/
+            else
+                ls -1 "${TMPDIR:-/tmp}"/kakoune-"${USER}"/
+            fi
+            ;;
+    esac
+} send-selection-to-session-register %{
+    evaluate-commands -save-regs m %{
+        execute-keys \"my
+        edit -scratch
+        execute-keys \"m<a-R>
+
+        try %{
+            execute-keys -draft s "'" <ret> yP
+        }
+        execute-keys i " '" <esc> a "'" <esc> gg i "reg %arg{1} " <esc> <percent>
+        execute-keys <a-|> " kak -p %arg{2}" <ret>
+        delete-buffer
+    }
+}
