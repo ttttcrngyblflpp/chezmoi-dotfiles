@@ -5,15 +5,22 @@ prepend_path () {
     fi
 }
 
-{{- if eq .chezmoi.hostname "gongt-glaptop2" }}
+{{- if .is_work }}
 export FUCHSIA_DIR=~/fx
+prepend_path ~/fx/.jiri_root/bin
+source ~/fx/scripts/fx-env.sh
+{{ end }}
+
+{{- if eq .chezmoi.hostname "gongt-glaptop2" }}
 prepend_path /usr/lib/google-golang/bin
 prepend_path /home/gongt/.fuchsia/foxtrot
 prepend_path /home/gongt/depot_tools
-prepend_path ~/fx/.jiri_root/bin
 prepend_path /home/gongt/fuchsia-sdk/tools/x64:$PATH
-source ~/fx/scripts/fx-env.sh
-{{- end }}
+{{ end }}
+
+{{- if .is_corp }}
+source ~/.config/zsh/work.sh
+{{ end }}
 
 prepend_path ~/.cargo/bin
 prepend_path ~/go/bin

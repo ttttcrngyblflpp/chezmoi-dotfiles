@@ -1,6 +1,8 @@
 {{- $headless := promptBoolOnce . "headless" "Is this machine headless" -}}
-{{- $is_work := promptBoolOnce . "is_work" "Is this a work workstation" -}}
+{{- $is_work := promptBoolOnce . "is_work" "Is this at work" -}}
+{{- $is_corp := promptBoolOnce . "is_corp" "Does this have access to corp" -}}
 
 [data]
     headless = {{ $headless }}
     is_work = {{ $is_work }}
+    is_corp = {{ $is_corp }}

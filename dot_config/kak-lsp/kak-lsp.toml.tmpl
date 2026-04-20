@@ -92,7 +92,7 @@ command = "gopls"
 offset_encoding = "utf-8"
 settings_section = "gopls"
 [language.go.settings.gopls]
-{{- if eq .chezmoi.hostname "gongt-glaptop2" }}
+{{- if .is_work }}
 "build.env".GOFLAGS = "-mod=readonly"
 #"build.env".GOMODCACHE = "/usr/local/google/home/gongt/fx/vendor"
 "build.env".GOROOT = "/usr/local/google/home/gongt/fx/out/core.x64-balanced/host-tools/goroot"
