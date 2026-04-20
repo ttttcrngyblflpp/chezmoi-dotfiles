@@ -217,3 +217,13 @@ define-command -params 2.. -docstring %{
         delete-buffer
     }
 }
+
+define-command -override copy-location-to-tmux -docstring "Copy current file:line to tmux clipboard" %{
+    nop %sh{
+        # Collect the data and pipe it to tmux
+        printf "%s:%s" "$kak_buffile" "$kak_cursor_line" | tmux load-buffer -
+    }
+    echo -markup "{Information}Copied location to tmux clipboard"
+}
+
+map global user y ':copy-location-to-tmux<ret>' -docstring 'copy file:line'
