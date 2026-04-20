@@ -1,13 +1,9 @@
-{{- if ne .chezmoi.hostname "gongt-glaptop2" }}
+{{ if .headless -}}
 .config/alacritty/alacritty.yml
-.local/bin/myfx
-.xsession
-{{- end }}
-
-{{- if .headless -}}
-.xinitrc
 .config/i3/config
 .local/bin/wm
+.xinitrc
 .Xresources
 .xserverrc
+.xsession
 {{- end }}
