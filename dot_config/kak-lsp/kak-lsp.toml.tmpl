@@ -80,10 +80,12 @@ elmPath = "elm"
 elmFormatPath = "elm-format"
 elmTestPath = "elm-test"
 
+{{- if .is_work }}
 [language.fidl]
 filetypes = ["fidl"]
 roots = ["fidl_project.json"]
 command = "/usr/local/google/home/gongt/fidl-misc/vscode-language-fidl/bin/linux/server"
+{{- end }}
 
 [language.go]
 filetypes = ["go"]

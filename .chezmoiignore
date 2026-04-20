@@ -6,4 +6,9 @@
 .Xresources
 .xserverrc
 .xsession
-{{- end }}
+{{ end }}
+
+{{ if not .is_work -}}
+.config/alacritty/alacritty.yml
+.xsession
+{{ end }}

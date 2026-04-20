@@ -20,8 +20,8 @@ bindsym $gui+Shift+a exec wm a
 bindsym $gui+$alt+a exec i3-msg '[workspace=".*"] move workspace to output primary'
 bindsym $gui+Shift+$alt+d exec wm d
 {{- else }}
-bindsym $gui+Shift+a exec xrandr --output DP-4 --guie 5120x1440 --rate 240 --primary --output DP-2 --off
-bindsym $gui+$alt+a exec xrandr --output DP-2 --guie 5120x1440 --rate 240 --primary --output DP-4 --off
+bindsym $gui+Shift+a exec xrandr --output DP-4 --mode 5120x1440 --rate 240 --primary --output DP-2 --off
+bindsym $gui+$alt+a exec xrandr --output DP-2 --mode 5120x1440 --rate 240 --primary --output DP-4 --off
 {{- end }}
 
 # start a browser
@@ -152,7 +152,7 @@ bindsym $gui+minus exec dmenu_run
 # installed.
 # bindsym $gui+d exec --no-startup-id i3-dmenu-desktop
 
-# enter fullscreen guie for the focused container
+# enter fullscreen mode for the focused container
 bindsym $gui+f fullscreen toggle
 
 # Define the mode name
