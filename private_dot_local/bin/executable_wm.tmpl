@@ -24,32 +24,26 @@ case "$1" in
     "k")
         case "$2" in
             "d")
-                setxkbmap -device $(xinput list --id-only 'AT Translated Set 2 keyboard') -option ctrl:s
-apcaps -option altwin:swap_lalt_lwin -layout us -variant dvorak
+                setxkbmap -device $(xinput list --id-only 'AT Translated Set 2 keyboard') -option ctrl:swapcaps -option altwin:swap_lalt_lwin -layout us -variant dvorak
                 ;;
             "q")
-                setxkbmap -device $(xinput list --id-only 'AT Translated Set 2 keyboard') -layout us -va
-iant "" -option
+                setxkbmap -device $(xinput list --id-only 'AT Translated Set 2 keyboard') -layout us -variant "" -option
                 ;;
         esac
         ;;
     "a")
         case "$2" in
             "w")
-                xrandr --output DP-2-8 --auto --primary --output DP-2-1 --right-of DP-2-8 --auto --outpu
- eDP-1 --mode 2560x1600 --below DP-2-1
-                # Note that the positioning must be a separate command otherwise it doesn't work half th
- time.
+                xrandr --output DP-2-8 --auto --primary --output DP-2-1 --right-of DP-2-8 --auto --output eDP-1 --mode 2560x1600 --below DP-2-1
+                # Note that the positioning must be a separate command otherwise it doesn't work half thtime.
                 xrandr --setmonitor big auto DP-2-8,DP-2-1
                 xrandr --output eDP-1 --pos 1280x1440
                 ;;
             "b")
-                xrandr --output DP-2 --mode 3840x1600 --primary --output eDP-1 --mode 2560x1600 --below
-P-2
+                xrandr --output DP-2 --mode 3840x1600 --primary --output eDP-1 --mode 2560x1600 --below DP-2
                 ;;
             "")
-                xrandr --output DP-2 --mode 5120x1440 --primary --output eDP-1 --mode 2560x1600 --below
-P-2
+                xrandr --output DP-2 --mode 5120x1440 --primary --output eDP-1 --mode 2560x1600 --below DP-2
                 xrandr --output eDP-1 --pos 1280x1440
                 ;;
         esac
@@ -59,13 +53,11 @@ P-2
     "d")
         case "$2" in
             "w")
-                xrandr --output DP-2-8 --off --output DP-2-1 --off --output eDP-1 --mode 2560x1600 --pri
-ary
+                xrandr --output DP-2-8 --off --output DP-2-1 --off --output eDP-1 --mode 2560x1600 --primary
                 xrandr --delmonitor big
                 ;;
             "")
-                xrandr --output DP-1 --off --output DP-2 --off --output DP-3 --off --output DP-4 --off -
-output HDMI-1 --off --output eDP-1 --auto --mode 2560x1600 --primary
+                xrandr --output DP-1 --off --output DP-2 --off --output DP-3 --off --output DP-4 --off --output HDMI-1 --off --output eDP-1 --auto --mode 2560x1600 --primary
                 ;;
         esac
         sleep 1
