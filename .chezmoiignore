@@ -3,3 +3,11 @@
 .local/bin/myfx
 .xsession
 {{- end }}
+
+{{- if .headless -}}
+.xinitrc
+.config/i3/config
+.local/bin/wm
+.Xresources
+.xserverrc
+{{- end }}
