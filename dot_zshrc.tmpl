@@ -46,6 +46,10 @@ zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
 export FZF_DEFAULT_COMMAND='rg --files'
 export FZF_CTRL_T_COMMAND=$FZF_DEFAULT_COMMAND
 
+{{- if .is_work }}
 source /usr/share/doc/fzf/examples/key-bindings.zsh
 source /usr/share/doc/fzf/examples/completion.zsh
-
+{{- else }}
+source /usr/share/fzf/key-bindings.zsh
+source /usr/share/fzf/completion.zsh
+{{- end }}
