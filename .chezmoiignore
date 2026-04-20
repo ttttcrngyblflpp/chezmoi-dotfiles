@@ -1,0 +1,5 @@
+{{- if ne .chezmoi.hostname "gongt-glaptop2" }}
+.config/alacritty/alacritty.yml
+.local/bin/myfx
+.xsession
+{{- end }}

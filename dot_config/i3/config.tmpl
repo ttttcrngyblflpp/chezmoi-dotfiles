@@ -5,6 +5,32 @@
 # this file and re-run i3-config-wizard(1).
 #
 
+{{- if eq .chezmoi.hostname "gongt-glaptop2" }}
+exec aw-qt
+
+bindsym $gui+Home exec wm k d
+bindsym $gui+End exec wm k q
+
+bindsym $gui+Shift+$alt+w exec wm w
+{{- end }}
+
+# bindings for attaching to/detaching from an external monitor
+{{- if eq .chezmoi.hostname "gongt-glaptop2" }}
+bindsym $gui+Shift+a exec wm a
+bindsym $gui+$alt+a exec i3-msg '[workspace=".*"] move workspace to output primary'
+bindsym $gui+Shift+$alt+d exec wm d
+{{- else }}
+bindsym $gui+Shift+a exec xrandr --output DP-4 --guie 5120x1440 --rate 240 --primary --output DP-2 --off
+bindsym $gui+$alt+a exec xrandr --output DP-2 --guie 5120x1440 --rate 240 --primary --output DP-4 --off
+{{- end }}
+
+# start a browser
+{{- if eq .chezmoi.hostname "gongt-glaptop2" }}
+bindsym $gui+Tab exec google-chrome
+{{- else }}
+bindsym $gui+Tab exec google-chrome-stable
+{{- end }}
+
 bindsym $gui+Shift+o exec alacritty -e pulsemixer, exec easyeffects, exec alacritty --title terminal
 bindsym $gui+$alt+o exec wm o
 bindsym $gui+o exec wm m
@@ -47,10 +73,6 @@ bindsym $gui+g exec i3ext center left
 bindsym $gui+z exec i3-input -F "exec i3ext resize-all %s" -P 'i3ext resize-all '
 bindsym $gui+Shift+z exec i3-input -F "exec i3-msg [floating] resize set %s" -P 'i3-msg [floating] resize set '
 
-# bindings for attaching to/detaching from an external monitor
-bindsym $gui+Shift+a exec xrandr --output DP-4 --guie 5120x1440 --rate 240 --primary --output DP-2 --off
-bindsym $gui+$alt+a exec xrandr --output DP-2 --guie 5120x1440 --rate 240 --primary --output DP-4 --off
-
 # Rename current window
 bindsym $gui+n exec i3-input -F "title_format %s"
 
@@ -67,9 +89,6 @@ bindsym $gui+Shift+grave [workspace="__focused__"] split vertical; [workspace="_
 
 # start a placeholder
 bindsym $gui+Prior open
-
-# start a browser
-bindsym $gui+Tab exec google-chrome-stable
 
 # change focus
 bindsym $gui+comma focus left

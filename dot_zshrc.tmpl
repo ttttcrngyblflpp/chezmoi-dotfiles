@@ -1,3 +1,9 @@
+{{- if eq .chezmoi.hostname "gongt-glaptop2" }}
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+{{- end }}
+
 export WD=$(basename $PWD)
 function chpwd() {
   export WD=$(basename $PWD)
@@ -39,3 +45,7 @@ zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
 
 export FZF_DEFAULT_COMMAND='rg --files'
 export FZF_CTRL_T_COMMAND=$FZF_DEFAULT_COMMAND
+
+source /usr/share/doc/fzf/examples/key-bindings.zsh
+source /usr/share/doc/fzf/examples/completion.zsh
+

@@ -1,0 +1,27 @@
+prepend_path () {
+    if ! grep $1 <<<"$PATH" >/dev/null
+    then
+    	export PATH=$1:$PATH
+    fi
+}
+
+{{- if eq .chezmoi.hostname "gongt-glaptop2" }}
+export FUCHSIA_DIR=~/fx
+prepend_path /usr/lib/google-golang/bin
+prepend_path /home/gongt/.fuchsia/foxtrot
+prepend_path /home/gongt/depot_tools
+prepend_path ~/fx/.jiri_root/bin
+prepend_path /home/gongt/fuchsia-sdk/tools/x64:$PATH
+source ~/fx/scripts/fx-env.sh
+{{- end }}
+
+prepend_path ~/.cargo/bin
+prepend_path ~/go/bin
+
+prepend_path ~/.node_modules/bin
+export npm_config_prefix=$HOME/.node_modules
+
+prepend_path ~/.local/bin
+
+export EDITOR=kak
+export PAGER='less -FQ'

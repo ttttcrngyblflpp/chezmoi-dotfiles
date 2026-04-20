@@ -80,6 +80,11 @@ elmPath = "elm"
 elmFormatPath = "elm-format"
 elmTestPath = "elm-test"
 
+[language.fidl]
+filetypes = ["fidl"]
+roots = ["fidl_project.json"]
+command = "/usr/local/google/home/gongt/fidl-misc/vscode-language-fidl/bin/linux/server"
+
 [language.go]
 filetypes = ["go"]
 roots = ["Gopkg.toml", "go.mod", ".git", ".hg"]
@@ -87,8 +92,15 @@ command = "gopls"
 offset_encoding = "utf-8"
 settings_section = "gopls"
 [language.go.settings.gopls]
+{{- if eq .chezmoi.hostname "gongt-glaptop2" }}
+"build.env".GOFLAGS = "-mod=readonly"
+#"build.env".GOMODCACHE = "/usr/local/google/home/gongt/fx/vendor"
+"build.env".GOROOT = "/usr/local/google/home/gongt/fx/out/core.x64-balanced/host-tools/goroot"
+"build.buildFlags" = ["-tags=fuchsia"]
+"build.directoryFilters" = ["-out"]
+{{- else }}
 # See https://github.com/golang/tools/blob/master/gopls/doc/settings.md
-# "build.buildFlags" = []
+{{- end }}
 
 [language.haskell]
 filetypes = ["haskell"]
