@@ -34,9 +34,9 @@ case "$1" in
     "a")
         case "$2" in
             "w")
-                xrandr --output DP-2-8 --auto --primary --output DP-2-1 --right-of DP-2-8 --auto --output eDP-1 --mode 2560x1600 --below DP-2-1
+                xrandr --output DP-2-1 --auto --primary --output DP-2-8 --right-of DP-2-1 --auto --output eDP-1 --mode 2560x1600 --below DP-2-8
                 # Note that the positioning must be a separate command otherwise it doesn't work half thtime.
-                xrandr --setmonitor big auto DP-2-8,DP-2-1
+                xrandr --setmonitor big auto DP-2-1,DP-2-8
                 xrandr --output eDP-1 --pos 1280x1440
                 ;;
             "b")
@@ -58,6 +58,8 @@ case "$1" in
                 ;;
             "")
                 xrandr --output DP-1 --off --output DP-2 --off --output DP-3 --off --output DP-4 --off --output HDMI-1 --off --output eDP-1 --auto --mode 2560x1600 --primary
+                xrandr --output DP-2-8 --off --output DP-2-1 --off --output eDP-1 --mode 2560x1600 --primary
+                xrandr --delmonitor big
                 ;;
         esac
         sleep 1

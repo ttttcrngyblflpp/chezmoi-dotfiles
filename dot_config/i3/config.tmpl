@@ -17,7 +17,8 @@ bindsym $gui+Shift+$alt+w exec wm w
 # bindings for attaching to/detaching from an external monitor
 {{- if eq .chezmoi.hostname "gongt-glaptop2" }}
 bindsym $gui+Shift+a exec wm a
-bindsym $gui+$alt+a exec i3-msg '[workspace=".*"] move workspace to output primary'
+bindsym $gui+$alt+a exec wm a w
+bindsym $gui+$alt+d exec wm d w
 bindsym $gui+Shift+$alt+d exec wm d
 {{- else }}
 bindsym $gui+Shift+a exec xrandr --output DP-4 --mode 5120x1440 --rate 240 --primary --output DP-2 --off
