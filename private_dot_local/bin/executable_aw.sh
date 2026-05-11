@@ -15,7 +15,7 @@ WEEK_GOAL_SEC=$(( WEEKLY_GOAL_HOURS * 3600 ))
 BUCKET_NAME=$(curl -s "$API_URL/buckets" | jq -r 'keys[] | select(contains("aw-watcher-afk"))' | head -n 1)
 
 if [ -z "$BUCKET_NAME" ]; then
-    echo "{\"state\": \"Critical\", \"text\": \"AW Offline\"}"
+    echo "{}"
     exit 1
 fi
 
