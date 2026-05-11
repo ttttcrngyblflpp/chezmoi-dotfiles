@@ -242,6 +242,10 @@ bindsym $gui+Shift+r restart
 # finds out, if available)
 bar {
 	position top
+{{- if eq .chezmoi.hostname "gongt-glaptop2" }}
+        status_command i3status-rs
+{{- else }}
         status_command i3status
+{{- end }}
 	tray_output primary
 }
