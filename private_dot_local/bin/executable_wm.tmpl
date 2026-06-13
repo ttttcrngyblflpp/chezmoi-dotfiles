@@ -129,4 +129,18 @@ case "$1" in
         ;;
         esac
     ;;
+    "c")
+        case "$2" in
+        "l")
+            gsettings set org.gnome.desktop.interface color-scheme 'default'
+            ln -sf ~/.config/alacritty/themes/themes/gruvbox_light.toml ~/.config/alacritty/themes/theme.toml
+            touch ~/.config/alacritty/alacritty.toml
+        ;;
+        "d")
+            gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
+            ln -sf ~/.config/alacritty/themes/themes/gruvbox_dark.toml ~/.config/alacritty/themes/theme.toml
+            touch ~/.config/alacritty/alacritty.toml
+        ;;
+        esac
+    ;;
 esac
