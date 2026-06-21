@@ -1,0 +1,6 @@
+[general]
+import = [
+    "~/.config/alacritty/themes/theme.toml"
+]
+[font]
+size = 9
