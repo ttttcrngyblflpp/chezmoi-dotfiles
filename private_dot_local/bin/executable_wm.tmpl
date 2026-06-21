@@ -50,6 +50,50 @@ case "$1" in
         sleep 1
         xrdb -merge <.Xresources
         ;;
+    "b")
+        case "$2" in
+        "")
+            xsetroot -solid black
+        ;;
+        *)
+            TARGET_IMG=$(realpath "$2")
+            TARGET_DISPLAY="eDP-1"
+            FALLBACK_COLOR="000000"
+
+            # Create a temporary 1x1 transparent pixel to act as our "blank" image
+            TRANSPARENT_PIXEL="/tmp/transparent_pixel.png"
+            if [ ! -f "$TRANSPARENT_PIXEL" ]; then
+                convert -size 1x1 xc:none "$TRANSPARENT_PIXEL"
+            fi
+
+            # 1. Paint the entire X11 root window with your fallback solid color first
+            xsetroot -solid "$FALLBACK_COLOR"
+
+            # 2. Get the exact ordered list of connected monitors from xrandr
+            readarray -t MONITORS < <(xrandr --listmonitors | awk 'NR>1 {print $4}')
+
+            # 3. Verify eDP-1 is actually in the list
+            if [[ ! " ${MONITORS[@]} " =~ " ${TARGET_DISPLAY} " ]]; then
+                echo "Error: Display $TARGET_DISPLAY not found in active xrandr layout."
+                exit 1
+            fi
+
+            # 4. Construct the precise argument list for feh
+            FEH_ARGS=()
+            for MON in "${MONITORS[@]}"; do
+                if [ "$MON" == "$TARGET_DISPLAY" ]; then
+                    FEH_ARGS+=("$TARGET_IMG")
+                else
+                    # Pass the transparent pixel; the xsetroot color will show underneath it
+                    FEH_ARGS+=("$TRANSPARENT_PIXEL")
+                fi
+            done
+
+            # 5. Execute feh
+            feh --bg-max "${FEH_ARGS[@]}"
+        ;;
+        esac
+        ;;
     "d")
         case "$2" in
             "w")
@@ -118,6 +162,7 @@ case "$1" in
 
         apply_mouse_settings "WL WLMOUSE 1K RECEIVER" -12
         apply_mouse_settings "OGM Wireless" -11
+        apply_mouse_settings "G-Wolves G-Wolves Fenrir Pro 8K Receiver-N" -14
         ;;
     "s")
         case "$2" in
