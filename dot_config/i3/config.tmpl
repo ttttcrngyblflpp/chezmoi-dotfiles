@@ -28,8 +28,9 @@ bindsym $gui+Shift+$alt+d exec xrandr --output HDMI-0 --off --output DP-0 --off 
 {{- end }}
 
 # start a browser
-{{- if eq .chezmoi.hostname "gongt-glaptop2" }}
-bindsym $gui+Tab exec google-chrome
+{{- if .is_work }}
+bindsym $gui+Tab exec google-chrome --profile-directory="Profile 2"
+bindsym $gui+Shift+Tab exec google-chrome --profile-directory="Profile 13"
 {{- else }}
 bindsym $gui+Tab exec google-chrome-stable
 {{- end }}
