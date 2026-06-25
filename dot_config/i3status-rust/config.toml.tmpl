@@ -14,13 +14,13 @@ done_cmd = "xrandr --output DP-4 --off"
 {{- if eq .chezmoi.hostname "gongt-glaptop2" }}
 [[block]]
 block = "custom"
-command = "aw.sh 4 daily"
+command = "aw.sh daily"
 json = true
 interval = 60
 
 [[block]]
 block = "custom"
-command = "aw.sh 4 weekly"
+command = "aw.sh weekly"
 json = true
 interval = 60
 {{- end }}
