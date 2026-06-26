@@ -2,6 +2,8 @@
 
 set -x
 
+source ~/.config/wm/monitor.sh
+
 apply_mouse_settings() {
     local device_name="$1"
     local angle="$2"
@@ -38,14 +40,17 @@ case "$1" in
                 # Note that the positioning must be a separate command otherwise it doesn't work half thtime.
                 xrandr --setmonitor *big auto DP-2-1,DP-2-8
                 xrandr --output eDP-1 --pos 1280x1440
+                echo "MONITOR=w" > ~/.config/wm/monitor.sh
                 ;;
             "b")
                 xrandr --output DP-2 --mode 3840x1600 --primary --output eDP-1 --mode 2560x1600 --below DP-2
                 xrandr --output eDP-1 --pos 640x1600
+                echo "MONITOR=b" > ~/.config/wm/monitor.sh
                 ;;
             "")
                 xrandr --output DP-2 --mode 5120x1440 --primary --output eDP-1 --mode 2560x1600 --below DP-2
                 xrandr --output eDP-1 --pos 1280x1440
+                echo "MONITOR=h" > ~/.config/wm/monitor.sh
                 ;;
         esac
         sleep 1
@@ -105,6 +110,7 @@ case "$1" in
                 xrandr --output DP-1 --off --output DP-2 --off --output DP-3 --off --output DP-4 --off --output HDMI-1 --off --output eDP-1 --auto --mode 2560x1600 --primary
                 xrandr --output DP-2-8 --off --output DP-2-1 --off --output eDP-1 --mode 2560x1600 --primary
                 xrandr --delmonitor big
+                echo "MONITOR=d" > ~/.config/wm/monitor.sh
                 ;;
         esac
         sleep 1
@@ -182,4 +188,31 @@ case "$1" in
         ;;
         esac
     ;;
+    "i")
+        case "${MONITOR:=d}" in
+            "d")
+                ARGS=("--terminal" "50" "--browser" "50")
+                ;;
+            "b")
+                ARGS=("--terminal" "22" "--browser" "33")
+                ;;
+            "w" | "h")
+                ARGS=("--terminal" "17" "--browser" "25")
+                ;;
+        esac
+        case "$2" in
+        "c")
+            i3ext "${ARGS[@]}" center
+            ;;
+        "r")
+            i3ext "${ARGS[@]}" center right
+            ;;
+        "l")
+            i3ext "${ARGS[@]}" center left
+            ;;
+        "z")
+            i3ext "${ARGS[@]}" resize-all
+            ;;
+        esac
+        ;;
 esac

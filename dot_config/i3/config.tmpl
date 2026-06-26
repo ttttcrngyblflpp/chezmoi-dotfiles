@@ -87,10 +87,10 @@ bindsym $gui+$alt+Left exec i3-input -F 'exec i3ext resize --direction left --pe
 bindsym $gui+Down exec i3ext resize --direction left --percentage "-1"
 
 # resize toplevel containers
-bindsym $gui+c exec i3ext center
-bindsym $gui+r exec i3ext center right
-bindsym $gui+g exec i3ext center left
-bindsym $gui+z exec i3-input -F "exec i3ext resize-all %s" -P 'i3ext resize-all '
+bindsym $gui+c exec wm i c
+bindsym $gui+r exec wm i r
+bindsym $gui+g exec wm i l
+bindsym $gui+z exec wm i z
 bindsym $gui+Shift+z exec i3-input -F "exec i3-msg [floating] resize set %s" -P 'i3-msg [floating] resize set '
 
 # Rename current window
