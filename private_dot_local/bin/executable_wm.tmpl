@@ -41,6 +41,7 @@ case "$1" in
                 ;;
             "b")
                 xrandr --output DP-2 --mode 3840x1600 --primary --output eDP-1 --mode 2560x1600 --below DP-2
+                xrandr --output eDP-1 --pos 640x1600
                 ;;
             "")
                 xrandr --output DP-2 --mode 5120x1440 --primary --output eDP-1 --mode 2560x1600 --below DP-2
