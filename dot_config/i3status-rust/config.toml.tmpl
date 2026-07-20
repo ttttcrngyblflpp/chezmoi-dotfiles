@@ -7,6 +7,12 @@ theme = "gruvbox-dark"
 icons = "none"
 
 [[block]]
+block = "tea_timer"
+increment = 60
+done_cmd = "xrandr --output DP-4 --off"
+
+{{- if eq .chezmoi.hostname "gongt-glaptop2" }}
+[[block]]
 block = "custom"
 command = "aw.sh 4 daily"
 json = true
@@ -17,6 +23,7 @@ block = "custom"
 command = "aw.sh 4 weekly"
 json = true
 interval = 60
+{{- end }}
 
 [[block]]
 block = "cpu"
@@ -45,10 +52,12 @@ block = "sound"
 button = "left"
 cmd = "pavucontrol"
 
+{{- if eq .chezmoi.hostname "gongt-glaptop2" }}
 [[block]]
 block = "battery"
 warning = 30
 critical = 15
+{{- end }}
 
 [[block]]
 block = "time"
