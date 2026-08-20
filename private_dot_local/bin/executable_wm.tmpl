@@ -127,12 +127,12 @@ case "$1" in
         ;;
 {{- else }}
     "o")
-        i3-msg 'exec google-chrome-stable --new-window 1password.com;
-        exec google-chrome-stable --new-window calendar.google.com;
-        exec google-chrome-stable --new-window gmail.com;
-        exec google-chrome-stable --new-window todoist.com;
-        exec google-chrome-stable --new-window music.youtube.com;
-        exec google-chrome-stable --new-window;
+        i3-msg 'exec chromium --new-window 1password.com;
+        exec chromium --new-window calendar.google.com;
+        exec chromium --new-window gmail.com;
+        exec chromium --new-window todoist.com;
+        exec chromium --new-window music.youtube.com;
+        exec chromium --new-window;
         exec obsidian'
         ;;
     "m")
@@ -156,13 +156,6 @@ case "$1" in
         {{- else }}
         apply_mouse_settings "Logitech PRO X" -9
         {{- end }}
-
-        # Apply to Endgame Gear
-        apply_mouse_settings "Endgame Gear Endgame Gear OP1 8k v2 Gaming Mouse" -12
-
-        apply_mouse_settings "WL WLMOUSE 1K RECEIVER" -12
-        apply_mouse_settings "WL WLMOUSE YING" -12
-        apply_mouse_settings "OGM Wireless" -11
         ;;
     "s")
         case "$2" in

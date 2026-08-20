@@ -32,7 +32,7 @@ bindsym $gui+Shift+$alt+d exec xrandr --output HDMI-0 --off --output DP-0 --off 
 bindsym $gui+Tab exec google-chrome --profile-directory="Profile 2"
 bindsym $gui+Shift+Tab exec google-chrome --profile-directory="Profile 13"
 {{- else }}
-bindsym $gui+Tab exec google-chrome-stable
+bindsym $gui+Tab exec chromium
 {{- end }}
 
 bindsym $gui+t exec wm c l
@@ -55,7 +55,7 @@ bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ to
 bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
 bindsym XF86AudioNext exec --no-startup-id playerctl next
 bindsym XF86AudioPrev exec --no-startup-id playerctl previous
-bindsym XF86AudioStop exec --no-startup-id playerctl play-pause
+bindsym XF86AudioPlay exec --no-startup-id playerctl play-pause
 bindsym XF86MonBrightnessDown exec --no-startup-id brightnessctl set 5%-
 bindsym XF86MonBrightnessUp exec --no-startup-id brightnessctl set 5%+
 
