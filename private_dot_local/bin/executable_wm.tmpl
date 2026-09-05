@@ -4,23 +4,6 @@ set -x
 
 source ~/.config/wm/monitor.sh
 
-apply_mouse_settings() {
-    local device_name="$1"
-    local angle="$2"
-    local accel="0"
-
-    # Calculate transformation matrix components
-    local deg=$(bc -l <<<"$angle*4*a(1)/180")
-    local cos=$(bc -l <<<"c($deg)")
-    local sin=$(bc -l <<<"s($deg)")
-    local negsin=$(bc -l <<<"-s($deg)")
-
-    # Apply settings
-    xinput set-prop "pointer:$device_name" "libinput Accel Speed" "$accel"
-    xinput set-prop "pointer:$device_name" "Coordinate Transformation Matrix" \
-        $cos $negsin 0 $sin $cos 0 0 0 1
-}
-
 case "$1" in
 {{- if eq .chezmoi.hostname "gongt-glaptop2" }}
     "k")
@@ -133,6 +116,9 @@ case "$1" in
         [con_mark="."] move scratchpad'
         ;;
 {{- else }}
+    "mo")
+        xinput | rg -o -r '$1' 'Apple.*id=([0-9]+)' | xargs -I {} xinput set-prop {} "Coordinate Transformation Matrix" 3, 0, 0, 0, 3, 0, 0, 0, 1
+        ;;
     "o")
         i3-msg 'exec chromium --new-window 1password.com;
         exec chromium --new-window calendar.google.com;
@@ -156,14 +142,6 @@ case "$1" in
         [con_mark="."] move scratchpad'
         ;;
 {{- end }}
-    "mo")
-        # Apply to Logitech
-        {{- if .is_work }}
-        apply_mouse_settings "Logitech USB Receiver" -9
-        {{- else }}
-        apply_mouse_settings "Logitech PRO X" -9
-        {{- end }}
-        ;;
     "s")
         case "$2" in
         "s")

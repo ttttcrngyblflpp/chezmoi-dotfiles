@@ -40,8 +40,7 @@ bindsym $gui+Shift+$alt+d exec xrandr --output HDMI-0 --off --output DP-0 --off 
 
 # start a browser
 {{- if .is_work }}
-bindsym $gui+Tab exec google-chrome --profile-directory="Profile 2"
-bindsym $gui+Shift+Tab exec google-chrome --profile-directory="Profile 13"
+bindsym $gui+Tab exec alacritty -e google-chrome
 {{- else }}
 bindsym $gui+Tab exec chromium
 {{- end }}
