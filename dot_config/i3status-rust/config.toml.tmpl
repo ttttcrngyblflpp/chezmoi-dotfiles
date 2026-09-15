@@ -7,25 +7,6 @@ theme = "gruvbox-dark"
 icons = "none"
 
 [[block]]
-block = "tea_timer"
-increment = 60
-done_cmd = "xrandr --output DP-4 --off"
-
-{{- if eq .chezmoi.hostname "gongt-glaptop2" }}
-[[block]]
-block = "custom"
-command = "aw.sh daily"
-json = true
-interval = 60
-
-[[block]]
-block = "custom"
-command = "aw.sh weekly"
-json = true
-interval = 60
-{{- end }}
-
-[[block]]
 block = "cpu"
 info_cpu = 20
 warning_cpu = 50
