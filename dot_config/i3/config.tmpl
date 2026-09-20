@@ -8,10 +8,8 @@
 {{- if eq .chezmoi.hostname "gongt-glaptop2" }}
 exec aw-qt
 
-bindsym $gui+Home exec wm k d
-bindsym $gui+End exec wm k q
-
-bindsym $gui+Shift+$alt+w exec wm w
+bindsym Mod4+Home exec wm k d
+bindsym Mod4+End exec wm k q
 {{- end }}
 
 # bindings for attaching to/detaching from an external monitor
@@ -29,7 +27,6 @@ mode "$mode_attach" {
     bindsym Escape mode "default"
 }
 
-bindsym $gui+Shift+a mode "$mode_attach"
 {{- else }}
 # Define the mode name
 set $mode_attach Attach to Monitor (h) home, (k) Kovaaks, (s) Slay the Spire 2
@@ -44,29 +41,27 @@ mode "$mode_attach" {
     bindsym Escape mode "default"
 }
 
-bindsym $gui+Shift+a mode "$mode_attach"
 {{- end }}
-bindsym $gui+Shift+$alt+d exec wm d
+bindsym Mod4+Control+a mode "$mode_attach"
+bindsym Mod4+Control+i exec wm d
 
 # start a browser
 {{- if .is_work }}
-bindsym $gui+Tab exec alacritty -e google-chrome
+bindsym Mod4+Tab exec alacritty -e google-chrome
 {{- else }}
-bindsym $gui+Tab exec chromium
+bindsym Mod4+Tab exec chromium
 {{- end }}
 
-bindsym $gui+t exec wm c l
-bindsym $gui+Shift+t exec wm c d
+bindsym Mod4+t exec wm c l
+bindsym Mod4+Control+t exec wm c d
 
-bindsym $gui+Shift+o exec alacritty -e pulsemixer, exec easyeffects, exec alacritty --title terminal
-bindsym $gui+$alt+o exec wm o
-bindsym $gui+o exec wm m
+bindsym Mod4+Control+o exec alacritty -e pulsemixer, exec easyeffects, exec alacritty --title terminal, exec wm o
+bindsym Mod4+o exec wm m
 
-bindsym $gui+$alt+s exec systemctl suspend
+bindsym Mod4+Control+s exec systemctl suspend
 
-bindsym $gui+Shift+m exec i3-input -F 'mark %s' -l 1 -P 'Mark: '
-bindsym $gui+m exec i3-input -F '[con_mark="%s"] focus' -l 1 -P 'Goto: '
-bindsym $gui+$alt+m exec wm mo
+bindsym Mod4+Control+m exec i3-input -F 'mark %s' -l 1 -P 'Mark: '
+bindsym Mod4+m exec i3-input -F '[con_mark="%s"] focus' -l 1 -P 'Goto: '
 exec wm mo
 
 bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +2% && $refresh_i3status
@@ -79,60 +74,57 @@ bindsym XF86AudioPlay exec --no-startup-id playerctl play-pause
 bindsym XF86MonBrightnessDown exec --no-startup-id brightnessctl set 5%-
 bindsym XF86MonBrightnessUp exec --no-startup-id brightnessctl set 5%+
 
-bindsym $gui+semicolon exec i3-input -F "exec i3-msg %s" -P 'i3-msg '
+bindsym Mod4+semicolon exec i3-input -F "exec i3-msg %s" -P 'i3-msg '
 
-bindsym $gui+b focus output down
-bindsym $gui+Shift+b move to output down
-bindsym $gui+Shift+$alt+b move workspace to output down
+bindsym Mod4+b focus output down
+bindsym Mod4+Control+b move workspace to output down
 
 # resize window
-bindsym $gui+Right exec i3ext resize --direction right --percentage 1
-bindsym $gui+Shift+Right exec i3ext swap right
-bindsym $gui+$alt+Right exec i3-input -F 'exec i3ext resize --direction right --percentage %s' -P 'resize right: '
-bindsym $gui+Up exec i3ext resize --direction right --percentage "-1"
-bindsym $gui+Left exec i3ext resize --direction left --percentage 1
-bindsym $gui+Shift+Left exec i3ext swap left
-bindsym $gui+$alt+Left exec i3-input -F 'exec i3ext resize --direction left --percentage %s' -P 'resize left: '
-bindsym $gui+Down exec i3ext resize --direction left --percentage "-1"
+bindsym Mod4+Right exec i3ext resize --direction right --percentage 1
+bindsym Mod4+Control+Right exec i3-input -F 'exec i3ext resize --direction right --percentage %s' -P 'resize right: '
+bindsym Mod4+Up exec i3ext resize --direction right --percentage "-1"
+bindsym Mod4+Left exec i3ext resize --direction left --percentage 1
+bindsym Mod4+Control+Left exec i3-input -F 'exec i3ext resize --direction left --percentage %s' -P 'resize left: '
+bindsym Mod4+Down exec i3ext resize --direction left --percentage "-1"
 
 # resize toplevel containers
-bindsym $gui+c exec wm i c
-bindsym $gui+r exec wm i r
-bindsym $gui+g exec wm i l
-bindsym $gui+z exec wm i z
-bindsym $gui+Shift+z exec i3-input -F "exec i3-msg [floating] resize set %s" -P 'i3-msg [floating] resize set '
+bindsym Mod4+c exec wm i c
+bindsym Mod4+r exec wm i r
+bindsym Mod4+g exec wm i l
+bindsym Mod4+z exec wm i z
+bindsym Mod4+Control+z exec i3-input -F "exec i3-msg [floating] resize set %s" -P 'i3-msg [floating] resize set '
 
 # Rename current window
-bindsym $gui+n exec i3-input -F "title_format %s"
+bindsym Mod4+n exec i3-input -F "title_format %s"
 
 # Rename current workspace
-bindsym $gui+Shift+n exec NUM=$(i3-msg -t get_workspaces | jq -r '.[] | select(.focused==true).name' | cut -d':' -f1) && i3-input -F "rename workspace to $NUM:%s"
+bindsym Mod4+Control+n exec NUM=$(i3-msg -t get_workspaces | jq -r '.[] | select(.focused==true).name' | cut -d':' -f1) && i3-input -F "rename workspace to $NUM:%s"
 
 # Take screenshot and copy to clipboard
-bindsym --release $gui+Delete exec --no-startup-id wm s
-bindsym --release $gui+Shift+Delete exec --no-startup-id wm s s
+bindsym --release Mod4+Delete exec --no-startup-id wm s
+bindsym --release Mod4+Control+Delete exec --no-startup-id wm s s
 
 # start a terminal
-bindsym $gui+grave exec alacritty
-#bindsym $gui+Shift+grave [workspace="__focused__"] split vertical; [workspace="__focused__"] layout stacking
+bindsym Mod4+grave exec alacritty
+#bindsym Mod4+Control+grave [workspace="__focused__"] split vertical; [workspace="__focused__"] layout stacking
 
 # start a placeholder
-bindsym $gui+Prior open
+bindsym Mod4+Prior open
 
 # change focus
-bindsym $gui+comma focus left
-bindsym $gui+j focus down
-bindsym $gui+k focus up
-bindsym $gui+period focus right
+bindsym Mod4+comma focus left
+bindsym Mod4+j focus down
+bindsym Mod4+k focus up
+bindsym Mod4+period focus right
 
 # move focused window
-bindsym $gui+Shift+comma move left
-bindsym $gui+Shift+j move down
-bindsym $gui+Shift+k move up
-bindsym $gui+Shift+period move right
+bindsym Mod4+Control+comma move left
+bindsym Mod4+Control+j move down
+bindsym Mod4+Control+k move up
+bindsym Mod4+Control+period move right
 
-bindsym $gui+d scratchpad show
-bindsym $gui+Shift+d move scratchpad
+bindsym Mod4+d scratchpad show
+bindsym Mod4+Control+d move scratchpad
 
 # Disable window titlebars always
 default_border pixel 1
@@ -147,9 +139,6 @@ client.focused          #f58b54 #f58b54 #ffffff #ffffff   #f58b54
 # i3 config file (v4)
 #
 # Please see https://i3wm.org/docs/userguide.html for a complete reference!
-
-set $gui Mod4
-set $alt Mod1
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
@@ -166,24 +155,24 @@ font pango:monospace 10
 # X core fonts rendering does not support right-to-left and this being a bitmap
 # font, it doesn’t scale on retina/hidpi displays.
 
-# Use Mouse+$gui to drag floating windows to their wanted position
-floating_modifier $gui
+# Use Mouse+Mod4 to drag floating windows to their wanted position
+floating_modifier Mod4
 
-bindsym $gui+equal focus mode_toggle
-bindsym $gui+Shift+equal floating toggle
+bindsym Mod4+equal focus mode_toggle
+bindsym Mod4+Control+equal floating toggle
 
 # kill focused window
-bindsym $gui+Shift+w kill
+bindsym Mod4+Control+w kill
 
 # start dmenu (a program launcher)
-bindsym $gui+minus exec dmenu_run
+bindsym Mod4+minus exec dmenu_run
 # There also is the (new) i3-dmenu-desktop which only displays applications
 # shipping a .desktop file. It is a wrapper around dmenu, so you need that
 # installed.
-# bindsym $gui+d exec --no-startup-id i3-dmenu-desktop
+# bindsym Mod4+d exec --no-startup-id i3-dmenu-desktop
 
 # enter fullscreen mode for the focused container
-bindsym $gui+f fullscreen toggle
+bindsym Mod4+f fullscreen toggle
 
 # Define the mode name
 set $mode_layout Layout (h) horizontal, (v) vertical, (s) stacking, (t) tabbed
@@ -207,69 +196,49 @@ mode "$mode_layout" {
 }
 
 # Bind a "hard to hit" key to enter the mode
-bindsym $gui+Shift+l mode "$mode_layout"
+bindsym Mod4+Control+l mode "$mode_layout"
 
 # focus the parent container
-bindsym $gui+a focus parent
+bindsym Mod4+a focus parent
 
 # focus the child container
-bindsym $gui+i focus child
+bindsym Mod4+i focus child
 
 # switch to workspace
-bindsym $gui+1 workspace number 1
-bindsym $gui+2 workspace number 2
-bindsym $gui+3 workspace number 3
-bindsym $gui+4 workspace number 4
-bindsym $gui+5 workspace number 5
-bindsym $gui+6 workspace number 6
-bindsym $gui+7 workspace number 7
-bindsym $gui+8 workspace number 8
-bindsym $gui+9 workspace number 9
-bindsym $gui+0 workspace number 0
-bindsym $gui+$alt+1 workspace number 11
-bindsym $gui+$alt+2 workspace number 12
-bindsym $gui+$alt+3 workspace number 13
-bindsym $gui+$alt+4 workspace number 14
-bindsym $gui+$alt+5 workspace number 15
-bindsym $gui+$alt+6 workspace number 16
-bindsym $gui+$alt+7 workspace number 17
-bindsym $gui+$alt+8 workspace number 18
-bindsym $gui+$alt+9 workspace number 19
-bindsym $gui+$alt+0 workspace number 20
+bindsym Mod4+1 workspace number 1
+bindsym Mod4+2 workspace number 2
+bindsym Mod4+3 workspace number 3
+bindsym Mod4+4 workspace number 4
+bindsym Mod4+5 workspace number 5
+bindsym Mod4+6 workspace number 6
+bindsym Mod4+7 workspace number 7
+bindsym Mod4+8 workspace number 8
+bindsym Mod4+9 workspace number 9
+bindsym Mod4+0 workspace number 0
 
 # move focused container to workspace
-bindsym $gui+Shift+1 move container to workspace number 1
-bindsym $gui+Shift+2 move container to workspace number 2
-bindsym $gui+Shift+3 move container to workspace number 3
-bindsym $gui+Shift+4 move container to workspace number 4
-bindsym $gui+Shift+5 move container to workspace number 5
-bindsym $gui+Shift+6 move container to workspace number 6
-bindsym $gui+Shift+7 move container to workspace number 7
-bindsym $gui+Shift+8 move container to workspace number 8
-bindsym $gui+Shift+9 move container to workspace number 9
-bindsym $gui+Shift+0 move container to workspace number 0
-bindsym $gui+Shift+$alt+1 move container to workspace number 11
-bindsym $gui+Shift+$alt+2 move container to workspace number 12
-bindsym $gui+Shift+$alt+3 move container to workspace number 13
-bindsym $gui+Shift+$alt+4 move container to workspace number 14
-bindsym $gui+Shift+$alt+5 move container to workspace number 15
-bindsym $gui+Shift+$alt+6 move container to workspace number 16
-bindsym $gui+Shift+$alt+7 move container to workspace number 17
-bindsym $gui+Shift+$alt+8 move container to workspace number 18
-bindsym $gui+Shift+$alt+9 move container to workspace number 19
-bindsym $gui+Shift+$alt+0 move container to workspace number 20
+bindsym Mod4+Control+1 move container to workspace number 1
+bindsym Mod4+Control+2 move container to workspace number 2
+bindsym Mod4+Control+3 move container to workspace number 3
+bindsym Mod4+Control+4 move container to workspace number 4
+bindsym Mod4+Control+5 move container to workspace number 5
+bindsym Mod4+Control+6 move container to workspace number 6
+bindsym Mod4+Control+7 move container to workspace number 7
+bindsym Mod4+Control+8 move container to workspace number 8
+bindsym Mod4+Control+9 move container to workspace number 9
+bindsym Mod4+Control+0 move container to workspace number 0
 
 # reload the configuration file
-bindsym $gui+Shift+c reload
+bindsym Mod4+Control+c reload
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
-bindsym $gui+Shift+r restart
+bindsym Mod4+Control+r restart
 # exit i3 (logs you out of your X session)
 
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
 bar {
    mode hide
-   modifier $gui
+   modifier Mod4
 	position top
         status_command i3status-rs
 	tray_output primary
