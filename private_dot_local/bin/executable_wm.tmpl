@@ -16,7 +16,9 @@ case "$1" in
                 ;;
         esac
         ;;
+{{- end }}
     "a")
+{{- if eq .chezmoi.hostname "gongt-glaptop2" }}
         case "$2" in
             "w")
                 xrandr --output DP-2-1 --auto --primary --output DP-2-8 --right-of DP-2-1 --auto --output eDP-1 --mode 2560x1600 --below DP-2-8
@@ -38,7 +40,27 @@ case "$1" in
         esac
         sleep 1
         xrdb -merge <.Xresources
+{{- else }}
+        case "$2" in
+            "k")
+                xrandr --output DP-4 --off
+                xrandr --output DP-2 --mode 2560x1440 --rate 540 --auto --primary
+                echo "MONITOR=d" > ~/.config/wm/monitor.sh
+                ;;
+            "")
+                xrandr --output DP-2 --off
+                xrandr --output DP-4 --mode 5120x1440 --rate 240 --auto --primary
+                echo "MONITOR=h" > ~/.config/wm/monitor.sh
+                ;;
+            "s")
+                xrandr --output DP-2 --off
+                xrandr --output DP-4 --mode 2560x1440 --rate 120 --auto --primary
+                echo "MONITOR=d" > ~/.config/wm/monitor.sh
+                ;;
+        esac
+{{- end }}
         ;;
+{{- if eq .chezmoi.hostname "gongt-glaptop2" }}
     "b")
         case "$2" in
         "")
@@ -83,7 +105,9 @@ case "$1" in
         ;;
         esac
         ;;
+{{- end }}
     "d")
+{{- if eq .chezmoi.hostname "gongt-glaptop2" }}
         case "$2" in
             "w")
                 xrandr --output DP-2-8 --off --output DP-2-1 --off --output eDP-1 --mode 2560x1600 --primary
@@ -98,8 +122,11 @@ case "$1" in
         esac
         sleep 1
         xrdb -merge <.Xresources
-        ;;
+{{- else }}
+        xrandr --output DP-2 --off --output DP-4 --off
+        xrandr --auto
 {{- end }}
+        ;;
 {{- if eq .chezmoi.hostname "gongt-glaptop2" }}
     "o")
         i3-msg 'exec google-chrome --new-window calendar.google.com;
@@ -120,25 +147,15 @@ case "$1" in
         xinput | rg -o -r '$1' 'Apple.*id=([0-9]+)' | xargs -I {} xinput set-prop {} "Coordinate Transformation Matrix" 3, 0, 0, 0, 3, 0, 0, 0, 1
         ;;
     "o")
-        i3-msg 'exec chromium --new-window 1password.com;
-        exec chromium --new-window calendar.google.com;
-        exec chromium --new-window gmail.com;
-        exec chromium --new-window todoist.com;
-        exec chromium --new-window music.youtube.com;
-        exec chromium --new-window;
+        i3-msg 'exec chromium --new-window 1password.com calendar.google.com gmail.com todoist.com music.youtube.com discord.com;
         exec obsidian'
         ;;
     "m")
         i3-msg '[title="pulsemixer"] mark a
-        [title="New Tab"] mark b
-        [title="Calendar"] mark c
         [title="Easy Effects"] mark e
-        [title="Gmail"] mark m
         [title="obsidian"] mark o
         [title="terminal"] mark s
-        [title="Todoist"] mark t
-        [title="Music"] mark y
-        [title="1Password"] mark 1
+        [title="1Password"] mark b
         [con_mark="."] move scratchpad'
         ;;
 {{- end }}
