@@ -143,9 +143,6 @@ case "$1" in
         [con_mark="."] move scratchpad'
         ;;
 {{- else }}
-    "mo")
-        xinput | rg -o -r '$1' 'Apple.*id=([0-9]+)' | xargs -I {} xinput set-prop {} "Coordinate Transformation Matrix" 3, 0, 0, 0, 3, 0, 0, 0, 1
-        ;;
     "o")
         i3-msg 'exec chromium --new-window 1password.com calendar.google.com gmail.com todoist.com music.youtube.com discord.com;
         exec obsidian'
@@ -159,6 +156,9 @@ case "$1" in
         [con_mark="."] move scratchpad'
         ;;
 {{- end }}
+    "mo")
+        xinput | rg -o -r '$1' 'Apple.*id=([0-9]+)' | xargs -I {} xinput set-prop {} "Coordinate Transformation Matrix" 2, 0, 0, 0, 2, 0, 0, 0, 1
+        ;;
     "s")
         case "$2" in
         "s")

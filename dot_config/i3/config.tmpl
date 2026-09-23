@@ -15,12 +15,13 @@ bindsym Mod4+End exec wm k q
 # bindings for attaching to/detaching from an external monitor
 {{- if eq .chezmoi.hostname "gongt-glaptop2" }}
 # Define the mode name
-set $mode_attach Attach to Monitor (h) home, (b) bedroom, (w) work
+set $mode_attach Attach to Monitor (h) home, (b) bedroom, (w) work, (d) detached
 
 mode "$mode_attach" {
     bindsym h exec wm a; mode "default"
     bindsym w exec wm a w; mode "default"
     bindsym b exec wm a b; mode "default"
+    bindsym d exec wm d; mode "default"
 
     # Back to normal: Enter or Escape
     bindsym Return mode "default"
@@ -29,12 +30,12 @@ mode "$mode_attach" {
 
 {{- else }}
 # Define the mode name
-set $mode_attach Attach to Monitor (h) home, (k) Kovaaks, (s) Slay the Spire 2
+set $mode_attach Attach to Monitor (h) home, (k) Kovaaks, (d) detached
 
 mode "$mode_attach" {
     bindsym h exec wm a; mode "default"
     bindsym k exec wm a k; mode "default"
-    bindsym s exec wm a s; mode "default"
+    bindsym d exec wm d; mode "default"
 
     # Back to normal: Enter or Escape
     bindsym Return mode "default"
@@ -43,7 +44,7 @@ mode "$mode_attach" {
 
 {{- end }}
 bindsym Mod4+Control+a mode "$mode_attach"
-bindsym Mod4+Control+i exec wm d
+bindsym Mod4+Control+i exec wm mo
 
 # start a browser
 {{- if .is_work }}
