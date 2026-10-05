@@ -50,7 +50,7 @@ bindsym Mod4+Control+i exec wm mo
 {{- if .is_work }}
 bindsym Mod4+Tab exec alacritty -e google-chrome
 {{- else }}
-bindsym Mod4+Tab exec chromium
+bindsym Mod4+Tab exec alacritty -e chromium
 {{- end }}
 
 bindsym Mod4+t exec wm c l
